@@ -79,14 +79,15 @@ The transformer will auto-detect the `config/` directory relative to your curren
 
 ### Using the CLI
 
-The easiest way to get started is using the command-line interface as below where
---input-dir = folder with recorded test scripts
---output-dir = folder where transformed script will be generated
---data-dir = folder where output data files will be generated
+The easiest way to get started is using the command-line interface as below where:
+
+- `--input-dir` = folder with recorded test scripts
+- `--output-dir` = folder where transformed script will be generated
+- `--data-dir` = folder where output data files will be generated
 
 ```bash
 # Transform all test files
-npx playwright-transformer \
+node node_modules/@egain-qe/egain-playwright-transformer/dist/cli.mjs \
   --all \
   --input-dir tests/input \
   --output-dir tests/output \
@@ -100,7 +101,7 @@ Add to your `package.json`:
 ```json
 {
   "scripts": {
-    "transform:all": "playwright-transformer --all --input-dir tests/input --output-dir tests/output --data-dir data/output"
+    "transform:all": "node node_modules/@egain-qe/egain-playwright-transformer/dist/cli.mjs --all --input-dir tests/input --output-dir tests/output --data-dir tests/data"
   }
 }
 ```
@@ -118,7 +119,12 @@ npm run transform:all
 The CLI provides a simple interface for transforming test files:
 
 ```bash
-playwright-transformer [options]
+# Transform all test files
+node node_modules/@egain-qe/egain-playwright-transformer/dist/cli.mjs \
+  --all \
+  --input-dir tests/input \
+  --output-dir tests/output \
+  --data-dir data/output
 ```
 
 #### Options
@@ -134,7 +140,7 @@ playwright-transformer [options]
 
 ```bash
 # Transform all test files
-playwright-transformer \
+node node_modules/@egain-qe/egain-playwright-transformer/dist/cli.mjs \
   --all \
   --input-dir ./tests/input \
   --output-dir ./tests/output \

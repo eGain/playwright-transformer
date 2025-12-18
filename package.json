@@ -29,8 +29,7 @@
   "scripts": {
     "build": "vite build",
     "dev": "ts-node src/index.ts",
-    "transform": "npm run build && node dist/cli.mjs",
-    "transform:all": "npm run build && node dist/cli.mjs",
+    "transform:all": "npm run build && node dist/cli.mjs --all --input-dir input --output-dir tests/output --data-dir data",
     "prepublishOnly": "npm run build",
     "prepare": "husky install",
     "test": "vitest",

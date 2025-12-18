@@ -8,21 +8,15 @@
     "npm": ">=10.1.0"
   },
   "scripts": {
-    "transform": "node node_modules/@eGainDev/playwright-transformer/dist/cli.mjs --input-dir src/input --output-dir src/tests --data-dir src/data",
-    "transform:all": "node node_modules/@eGainDev/playwright-transformer/dist/cli.mjs --all --input-dir src/input --output-dir src/tests --data-dir src/data"
+    "transform:all": "node node_modules/@egain-qe/egain-playwright-transformer/dist/cli.mjs --all --input-dir src/input --output-dir src/tests --data-dir src/data"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@aws-sdk/client-s3": "^3.0.0",
-    "@aws-sdk/node-http-handler": "^3.0.0",
-    "@currents/playwright": "^1.5.8",
-    "@eGainDev/playwright-transformer": "^0.1.5",
+    "@egain-qe/egain-playwright-transformer": "^0.1.1",
     "@faker-js/faker": "^8.4.1",
     "@playwright/test": "^1.50.0",
-    "@types/imap": "^0.8.42",
-    "@types/mailparser": "^3.4.5",
     "@types/node": "^22.7.5",
     "chrome-launcher": "^1.1.2",
     "dayjs": "^1.11.13",
@@ -33,10 +27,5 @@
     "prettier": "3.3.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
-  },
-  "dependencies": {
-    "get-port": "^7.1.0",
-    "imap": "^0.8.17",
-    "mailparser": "^3.7.2"
   }
 }
