@@ -1,0 +1,24 @@
+[
+	{
+		"regex": "(?=.*locator\\('([^']*)'\\))(?=.*fill\\('(.*)'\\)).*",
+		"groupNoForKey": "1",
+		"groupNoForValue": "2",
+		"keysToBeTreatedAsConstants": "",
+		"nonUniqueKeys": "",
+		"isKeyFrameset": "true",
+		"isContentFrameHandlingNeeded": "true",
+		"ignorePathInValue": "false",
+		"isFileUpload": "false"
+	},
+	{
+		"regex": "(?=.*locator\\('([^']*)'\\))(?=.*setInputFiles\\('(.*)'\\)).*",
+		"groupNoForKey": "1",
+		"groupNoForValue": "2",
+		"keysToBeTreatedAsConstants": "",
+		"nonUniqueKeys": "",
+		"isKeyFrameset": "false",
+		"isContentFrameHandlingNeeded": "false",
+		"ignorePathInValue": "true",
+		"isFileUpload": "true"
+	}
+]

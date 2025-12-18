@@ -1,0 +1,12 @@
+[
+	{
+		"existingLines": ".goto\\('[^']*'\\)",
+		"isRegex":"true",
+		"removeLines":"0"
+	},
+	{
+		"existingLines": "import { test, expect } from '@playwright/test'",
+		"removeLines":"0",
+		"separator":"\\|"
+	}
+]

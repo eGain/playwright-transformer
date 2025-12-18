@@ -1,0 +1,10 @@
+[
+	{
+		"pattern": ".fill('",
+		"patternScope": "doubleLine",
+		"placeHolder": "",
+		"placeHolderReplacements": "",
+		"compareTextBeforePattern": "true"
+	}
+]
+

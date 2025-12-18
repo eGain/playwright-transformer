@@ -1,0 +1,21 @@
+[
+	
+	{
+		"existingLines": "const page1 = await context.newPage\\(\\);|await page1\\.goto\\('(.*?)'\\);",
+		"linesToBeInserted": "const page1 = await context.newPage();|await page1.goto('__LINE__1__GROUP__1__');",
+		"isRegex":"true",
+		"insertAt":"0,1",
+		"removeLines":"0,1",
+		"separator":"\\|"
+	},
+	{
+		"existingLines": ".goto\\('[^']*'\\)",
+		"isRegex":"true",
+		"removeLines":"0"
+	},
+	{
+		"existingLines": "import { test, expect } from '@playwright/test'",
+		"removeLines":"0",
+		"separator":"\\|"
+	}
+]

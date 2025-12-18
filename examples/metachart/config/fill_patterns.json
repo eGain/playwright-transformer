@@ -1,0 +1,14 @@
+[
+	
+	{
+		"regex": ".*getByRole\\('([^']*)'.*\\{\\s*name:\\s*'([^']*)'\\s*\\}\\)(?=.*fill\\('(.*)'\\)).*",
+		"groupNoForKey": "2",
+		"groupNoForValue": "3",
+		"keysToBeTreatedAsConstants": "",
+		"nonUniqueKeys": "Keywords,Color Picker No value selected,Cc",
+		"isKeyFrameset": "false",
+		"isContentFrameHandlingNeeded": "false",
+		"ignorePathInValue": "false",
+		"isFileUpload": "false"
+	}
+]

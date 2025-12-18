@@ -1,0 +1,10 @@
+[
+  {
+    "tcName": "TC01",
+    "username": "standard_user",
+    "password": "secret_sauce",
+    "firstName": "Spendthrift",
+    "lastName": "Miser",
+    "postalCode": "44444"
+  }
+]

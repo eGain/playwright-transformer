@@ -1,0 +1,24 @@
+[
+	{
+		"dataPrependedBy": ".getByText('",
+		"dataAppendedBy": "')",
+		"isWholeWordMatch": "false",
+		"removeDateAtTheEnd": "false",
+		"keysAsNewPageLaunchers": "",
+		"keysWithContainTextOrToHaveValueAsDynamicIds": "",
+		"keysToBeTreatedAsConstants": "",
+		"replaceWithDynamicIds": "false",
+		"keysForFileUploading":""
+	},
+	{
+		"dataPrependedBy": "{ hasText: '",
+		"dataAppendedBy": "' }",
+		"isWholeWordMatch": "true",
+		"removeDateAtTheEnd": "false",
+		"keysAsNewPageLaunchers": "",
+		"keysWithContainTextOrToHaveValueAsDynamicIds": "",
+		"keysToBeTreatedAsConstants": "",
+		"replaceWithDynamicIds": "false",
+		"keysForFileUploading":""
+	}
+]
