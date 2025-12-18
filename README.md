@@ -155,7 +155,7 @@ For more control, use the programmatic API:
 import {
   transform,
   PlaywrightTransformer,
-} from '@eGainDev/playwright-transformer';
+} from '@egain-qe/egain-playwright-transformer';
 
 // Simple usage
 await transform({
@@ -672,7 +672,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 💬 Support
 
-For issues, questions, or contributions, please open an issue on [GitHub](https://github.com/eGainDev/playwright-transformer/issues).
+For issues, questions, or contributions, please open an issue on [GitHub](https://github.com/egain/playwright-transformer/issues).
 
 ---
 
