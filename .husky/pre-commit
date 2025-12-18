@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Running Prettier and ESLint..."
+npx lint-staged --relative
+echo "✅ Prettier and ESLint passed!"
+
+echo "🔍 Running TypeScript compiler..."
+npx tsc -p tsconfig.json --noEmit
+echo "✅ TypeScript compiler passed!"
+
+echo "🔍 Running Tests..."
+npm run test
+echo "✅ Tests passed!"

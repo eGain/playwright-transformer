@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@data/*": ["src/data/*"],
+      "@tests/*": ["src/tests/*"],
+    },
+    "types": ["node"]
+  },
+  "include": [
+    "playwright.config.ts",
+    "src/**/*.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
+}

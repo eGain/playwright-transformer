@@ -1,0 +1,87 @@
+{
+  "name": "@egain-qe/egain-playwright-transformer",
+  "version": "0.1.0",
+  "description": "Transform recorded Playwright tests into data-driven test script",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./cli": {
+      "types": "./dist/cli.d.ts",
+      "import": "./dist/cli.mjs",
+      "require": "./dist/cli.cjs"
+    }
+  },
+  "bin": {
+    "egain-playwright-transformer": "./dist/cli.mjs"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "dev": "ts-node src/index.ts",
+    "transform": "npm run build && node dist/cli.mjs",
+    "transform:all": "npm run build && node dist/cli.mjs",
+    "prepublishOnly": "npm run build",
+    "prepare": "husky install",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage"
+  },
+  "lint-staged": {
+    "**/*.ts": [
+      "prettier --write --ignore-path .prettierignore",
+      "eslint --fix"
+    ],
+    "**/*.{json,md}": [
+      "prettier --write --ignore-path .prettierignore"
+    ]
+  },
+  "keywords": [
+    "playwright",
+    "test-automation",
+    "data-driven-tests"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.48.0",
+    "@typescript-eslint/parser": "^8.48.0",
+    "@vitest/coverage-v8": "^4.0.14",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-unicorn": "^62.0.0",
+    "globals": "^16.5.0",
+    "husky": "^8.0.0",
+    "prettier": "^3.6.2",
+    "rollup-plugin-node-externals": "^8.1.2",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0",
+    "vite": "^5.4.0",
+    "vite-plugin-dts": "^3.9.1",
+    "vite-plugin-static-copy": "^3.1.4",
+    "vitest": "^4.0.14"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egain/playwright-transformer.git"
+  }
+}

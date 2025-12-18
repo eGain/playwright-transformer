@@ -1,0 +1,19 @@
+node_modules/
+dist/
+*.log
+.DS_Store
+npm-debug.log*
+
+# Test output files (generated, should not be committed)
+tests/output/
+tests/data/
+data/output/
+coverage/
+
+# Input/output test and data and config files
+input/
+data/
+tests/output/
+config/
+internal/
+config-bkup/
