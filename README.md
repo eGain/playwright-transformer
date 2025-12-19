@@ -62,6 +62,36 @@ Or using yarn:
 yarn add -D @egain-qe/egain-playwright-transformer
 ```
 
+### Install from Source
+
+If you've cloned or forked this repository and want to use it directly from source:
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/egain/playwright-transformer.git
+   cd playwright-transformer
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Build the project:**
+   ```bash
+   npm run build
+   ```
+
+4. **Use the CLI from the built files:**
+   ```bash
+   node dist/cli.mjs --all \
+     --input-dir tests/input \
+     --output-dir tests/output \
+     --data-dir data/output
+   ```
+
+> **Note:** You'll need to rebuild (`npm run build`) after making any changes to the source code.
+
 ## 🎯 Quick Start
 
 ### Prerequisites
@@ -85,9 +115,23 @@ The easiest way to get started is using the command-line interface as below wher
 - `--output-dir` = folder where transformed script will be generated
 - `--data-dir` = folder where output data files will be generated
 
+#### When installed as npm package:
+
 ```bash
 # Transform all test files
 node node_modules/@egain-qe/egain-playwright-transformer/dist/cli.mjs \
+  --all \
+  --input-dir tests/input \
+  --output-dir tests/output \
+  --data-dir data/output
+```
+
+#### When using from source (cloned/forked repo):
+
+```bash
+# First, make sure you've built the project (npm run build)
+# Then run:
+node dist/cli.mjs \
   --all \
   --input-dir tests/input \
   --output-dir tests/output \
@@ -118,9 +162,22 @@ npm run transform:all
 
 The CLI provides a simple interface for transforming test files:
 
+#### When installed as npm package:
+
 ```bash
 # Transform all test files
 node node_modules/@egain-qe/egain-playwright-transformer/dist/cli.mjs \
+  --all \
+  --input-dir tests/input \
+  --output-dir tests/output \
+  --data-dir data/output
+```
+
+#### When using from source (cloned/forked repo):
+
+```bash
+# Make sure you've built the project first (npm run build)
+node dist/cli.mjs \
   --all \
   --input-dir tests/input \
   --output-dir tests/output \
