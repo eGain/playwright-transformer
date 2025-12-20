@@ -1,6 +1,6 @@
 # 🎭 Playwright Transformer
 
-[![npm version](https://img.shields.io/npm/v/@egain-qe/egain-playwright-transformer)](https://www.npmjs.com/package/@egain-qe/egain-playwright-transformer)
+[![npm version](https://img.shields.io/npm/v/@egain/playwright-transformer)](https://www.npmjs.com/package/@egain/playwright-transformer)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Playwright Transformer is a powerful tool that automatically converts recorded Playwright test scripts into data-driven tests. It extracts test data values from your test files, externalizes them to JSON data files, and transforms your tests to use data-driven patterns—making your test suite more maintainable, scalable, and easier to update.
@@ -23,7 +23,7 @@ Playwright Transformer is a powerful tool that automatically converts recorded P
 - [Installation](#-installation)
   - [Prerequisites](#prerequisites)
   - [Install from npm](#install-from-npm)
-  - [Install from GitHub Packages](#install-from-github-packages)
+  - [Install from Source](#install-from-source)
 - [Quick Start](#-quick-start)
   - [Prerequisites](#prerequisites-1)
   - [Using the CLI](#using-the-cli)
@@ -53,13 +53,31 @@ Playwright Transformer is a powerful tool that automatically converts recorded P
 ### Install from npm
 
 ```bash
-npm install -D @egain-qe/egain-playwright-transformer
+npm install -D @egain/playwright-transformer
 ```
 
 Or using yarn:
 
 ```bash
-yarn add -D @egain-qe/egain-playwright-transformer
+yarn add -D @egain/playwright-transformer
+```
+
+After installation, you can use the CLI directly via npx:
+
+```bash
+npx @egain/playwright-transformer --all \
+  --input-dir tests/input \
+  --output-dir tests/output \
+  --data-dir data/output
+```
+
+Or if installed locally, use the bin command:
+
+```bash
+npx egain-transformer --all \
+  --input-dir tests/input \
+  --output-dir tests/output \
+  --data-dir data/output
 ```
 
 ### Install from Source
@@ -119,7 +137,7 @@ The easiest way to get started is using the command-line interface as below wher
 
 ```bash
 # Transform all test files
-node node_modules/@egain-qe/egain-playwright-transformer/dist/cli.mjs \
+node node_modules/@egain/playwright-transformer/dist/cli.mjs \
   --all \
   --input-dir tests/input \
   --output-dir tests/output \
@@ -145,7 +163,8 @@ Add to your `package.json`:
 ```json
 {
   "scripts": {
-    "transform:all": "node node_modules/@egain-qe/egain-playwright-transformer/dist/cli.mjs --all --input-dir tests/input --output-dir tests/output --data-dir tests/data"
+    "transform:all": "npx @egain/playwright-transformer --all --input-dir tests/input --output-dir tests/output --data-dir tests/data",
+    "transform": "npx @egain/playwright-transformer --input-dir tests/input --output-dir tests/output --data-dir tests/data"
   }
 }
 ```
@@ -153,7 +172,11 @@ Add to your `package.json`:
 Then run:
 
 ```bash
+# Transform all files
 npm run transform:all
+
+# Transform only the first file
+npm run transform
 ```
 
 ## 📖 Usage
@@ -166,8 +189,13 @@ The CLI provides a simple interface for transforming test files:
 
 ```bash
 # Transform all test files
-node node_modules/@egain-qe/egain-playwright-transformer/dist/cli.mjs \
-  --all \
+npx @egain/playwright-transformer --all \
+  --input-dir tests/input \
+  --output-dir tests/output \
+  --data-dir data/output
+
+# Transform only the first file (default)
+npx @egain/playwright-transformer \
   --input-dir tests/input \
   --output-dir tests/output \
   --data-dir data/output
@@ -186,19 +214,27 @@ node dist/cli.mjs \
 
 #### Options
 
-| Option         | Short | Description                                         | Required |
-| -------------- | ----- | --------------------------------------------------- | -------- |
-| `--input-dir`  | `-i`  | Directory containing source test files (`.spec.ts`) | ✅ Yes   |
-| `--output-dir` | `-o`  | Directory for transformed test files                | ✅ Yes   |
-| `--data-dir`   | `-d`  | Directory for JSON data files                       | ✅ Yes   |
-| `--help`       | `-h`  | Show help message                                   | ❌ No    |
+| Option         | Short | Description                                                      | Required |
+| -------------- | ----- | ---------------------------------------------------------------- | -------- |
+| `--input-dir`  | `-i`  | Directory containing source test files (`.spec.ts`)              | ✅ Yes   |
+| `--output-dir` | `-o`  | Directory for transformed test files                             | ✅ Yes   |
+| `--data-dir`   | `-d`  | Directory for JSON data files                                    | ✅ Yes   |
+| `--all`        | `-a`  | Transform all files in input directory (default: first file only)| ❌ No    |
+| `--help`       | `-h`  | Show help message                                                | ❌ No    |
+
+> **Note:** By default (without `--all` flag), the transformer processes only the first test file found in the input directory. Use the `--all` flag to transform all test files.
 
 #### Examples
 
 ```bash
 # Transform all test files
-node node_modules/@egain-qe/egain-playwright-transformer/dist/cli.mjs \
-  --all \
+npx @egain/playwright-transformer --all \
+  --input-dir ./tests/input \
+  --output-dir ./tests/output \
+  --data-dir ./data/output
+
+# Transform only the first test file (default behavior)
+npx @egain/playwright-transformer \
   --input-dir ./tests/input \
   --output-dir ./tests/output \
   --data-dir ./data/output
@@ -212,22 +248,23 @@ For more control, use the programmatic API:
 import {
   transform,
   PlaywrightTransformer,
-} from '@egain-qe/egain-playwright-transformer';
+} from '@egain/playwright-transformer';
 
-// Simple usage
+// Simple usage - transforms only the first file
 await transform({
   inputDir: './tests/input',
   outputDir: './tests/output',
   dataDir: './data/output',
 });
 
-// Advanced usage with custom configuration
+// Advanced usage - transform all files
 const transformer = new PlaywrightTransformer({
   inputDir: './tests/input',
   outputDir: './tests/output',
   dataDir: './data/output',
 });
 
+// Transform all files in the input directory
 const result = await transformer.transformAll();
 
 if (result.success) {
@@ -235,7 +272,12 @@ if (result.success) {
 } else {
   console.error('Errors:', result.errors);
 }
+
+// Or transform only the first file
+const firstFileResult = await transformer.transform();
 ```
+
+> **Note:** The `transform()` function and `transformer.transform()` method process only the first test file found in the input directory. Use `transformer.transformAll()` to process all files.
 
 ## 🔧 How It Works
 
@@ -243,8 +285,9 @@ Playwright Transformer follows a multi-phase transformation pipeline:
 
 ### 1. **Pre-processing Phase**
 
-- **Remove Noise**: Filters out unnecessary lines like goto steps for browser redirect
-- **Prepend Boilerplate**: Injects setup code from `prepend.ts` and `test_start.ts` at the beginning of each test file
+- **Apply Insert Line Patterns**: Processes patterns from `insert_lines.json` to insert, update, or remove lines
+- **Remove Noise**: Filters out unnecessary lines like goto steps for browser redirect based on skip patterns
+- **Prepend Boilerplate**: Injects import statements and setup code from `prepend.ts` at the beginning of each test file
 
 ### 2. **Pattern Processing Phase**
 
@@ -263,23 +306,26 @@ For each line in the test file:
 
 ### 3. **Transformation Phase**
 
-- **Fill Pattern Handler**: Replaces hardcoded values with data references:
+- **Fill Pattern Handler**: Replaces hardcoded values with data references. The `uniqueIndex` is automatically appended to values unless the key is specified in `nonUniqueKeys` or `keysToBeTreatedAsConstants`:
 
   ```typescript
   // Before
   await page.getByTestId('username').fill('john@example.com');
+  await page.getByTestId('email').fill('user@example.com'); // email in nonUniqueKeys
 
-  // After
+  // After (if username is not in nonUniqueKeys)
   await page.getByTestId('username').fill(data.username + uniqueIndex);
+  await page.getByTestId('email').fill(data.email); // no uniqueIndex for email
   ```
 
-- **Default Pattern Handler**: Applies text replacements from `replace_texts.json`:
-  - Data value replacement
-  - locators and IDs using the data values if any
-  - Skip any constant value substitution
-  - exclude unique index addition for any defined elements/steps
+- **TestCase Start Handler**: When a `test()` line is encountered, it uses `test_start.ts` as a template, replacing placeholders like `[[TEST_CASE_NAME_MATCHER]]` with the actual test name and data references
 
-- **Special Handlers**: Handle test structure, file endings, and special cases
+- **Default Pattern Handler**: Applies text replacements from `replace_texts.json`:
+  - Data value replacement in locators and selectors
+  - Skip constant value substitution
+  - Exclude unique index addition for keys defined in `keysToBeTreatedAsConstants`
+
+- **Special Handlers**: Handle test structure, file endings, complete file name placeholders, and special cases
 
 ### 4. **Output Generation Phase**
 
@@ -442,7 +488,12 @@ import path from 'path';
 
 ### 5. test_start.ts example
 
-In addition to below values include any additional steps needed in your tests before goto() steps. This is useful when you want to initialize any class, set any variables in your tests at start - for using it later in transformation in insert_lines.json file
+This file serves as a template for the test case structure. When the transformer encounters a `test()` line in the input file, it uses this template and replaces placeholders:
+
+- `[[TEST_CASE_NAME_MATCHER]]` - Replaced with the original test name plus `${data['tcName']}`
+- Other placeholders are replaced during transformation
+
+Include any additional steps needed in your tests before goto() steps. This is useful when you want to initialize any class, set any variables in your tests at start - for using it later in transformation in insert_lines.json file.
 
 ```ts
 for (const data of input) {
@@ -481,7 +532,7 @@ await page.getByTestId('name').fill('John Doe');
 ]
 ```
 
-**relace_texts.json:**
+**replace_texts.json:**
 
 ```json
 [
@@ -542,7 +593,7 @@ await page.getByTestId('country').selectOption('United States');
 ]
 ```
 
-**relace_texts.json:**
+**replace_texts.json:**
 
 ```json
 [
@@ -623,7 +674,7 @@ await page.locator('//input[@type="file"]').setInputFiles(filePath_1);
 
 ### `transform(config: TransformerConfig): Promise<TransformResult>`
 
-Transforms test files from the input directory.
+Transforms the **first** test file found in the input directory. This is a convenience function that internally calls `transformer.transform()`.
 
 **Parameters:**
 
@@ -636,12 +687,15 @@ Transforms test files from the input directory.
 **Example:**
 
 ```typescript
+// Transforms only the first file
 const result = await transform({
   inputDir: './tests/input',
   outputDir: './tests/output',
   dataDir: './data/output',
 });
 ```
+
+> **Note:** To transform all files, use `PlaywrightTransformer.transformAll()` instead.
 
 ### `PlaywrightTransformer`
 
@@ -655,9 +709,15 @@ new PlaywrightTransformer(config: TransformerConfig)
 
 #### Methods
 
+##### `transform(): Promise<TransformResult>`
+
+Transforms the **first** test file found in the input directory.
+
+**Returns:** `Promise<TransformResult>`
+
 ##### `transformAll(): Promise<TransformResult>`
 
-Transforms all test files in the input directory.
+Transforms **all** test files in the input directory.
 
 **Returns:** `Promise<TransformResult>`
 
