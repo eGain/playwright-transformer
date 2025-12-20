@@ -1,6 +1,6 @@
 {
   "name": "egain-playwright-transformer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Transform recorded Playwright tests into data-driven test script",
   "type": "module",
   "main": "./dist/index.cjs",
