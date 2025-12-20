@@ -42,7 +42,11 @@ export async function transform(config: TransformerConfig) {
 
     return result;
   } catch (error) {
-    Logger.error(`Transformation failed: ${error}`);
+    const errorMessage =
+      error instanceof Error
+        ? `Transformation failed: ${error.message}${error.stack ? `\n${error.stack}` : ''}`
+        : `Transformation failed: ${String(error)}`;
+    Logger.error(errorMessage);
     throw error;
   }
 }

@@ -7,6 +7,7 @@
 import { transform } from "./index";
 import { TransformerConfig } from "./types";
 import { Logger } from "./utils/logger";
+import * as fs from "fs";
 
 function parseArgs(): { config: TransformerConfig; transformAll: boolean } {
   const args = process.argv.slice(2);
@@ -75,6 +76,17 @@ Examples:
     process.exit(1);
   }
 
+  // Validate input directory exists
+  if (!fs.existsSync(config.inputDir)) {
+    console.error(`Error: Input directory does not exist: ${config.inputDir}`);
+    process.exit(1);
+  }
+
+  if (!fs.statSync(config.inputDir).isDirectory()) {
+    console.error(`Error: Input path is not a directory: ${config.inputDir}`);
+    process.exit(1);
+  }
+
   return { config: config as TransformerConfig, transformAll };
 }
 
@@ -105,7 +117,11 @@ async function main() {
     
     process.exit(0);
   } catch (error) {
-    Logger.error(`CLI Error: ${error}`);
+    const errorMessage =
+      error instanceof Error
+        ? `CLI Error: ${error.message}${error.stack ? `\n${error.stack}` : ''}`
+        : `CLI Error: ${String(error)}`;
+    Logger.error(errorMessage);
     process.exit(1);
   }
 }

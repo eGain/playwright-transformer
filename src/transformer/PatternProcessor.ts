@@ -41,6 +41,7 @@ export function getPattern(
   config: TransformerConfig,
   sourceDir?: string,
   dataSourcePath?: string,
+  sourcePath?: string,
 ): PatternHandler {
   const tsLine = testScriptLines[index].trim();
   let handler: PatternHandler | null = null;
@@ -51,9 +52,11 @@ export function getPattern(
   }
 
   // Check for commented line
+  // Commented lines are handled by DefaultPatternHandler which is always chained at the end.
+  // The DefaultPatternHandler will add comments as-is without transformation.
+  // This allows comments to pass through the chain and be preserved in the output.
   if (tsLine.indexOf(commentedLine) === 0) {
-    // TODO: Step 13 - return new DefaultPatternHandler(testScriptLines, index);
-    // For now, continue to chain handlers
+    // Continue to chain handlers - DefaultPatternHandler will handle the comment
   }
 
   // Check for complete test file name placeholder
@@ -80,7 +83,7 @@ export function getPattern(
   ) {
     handler = chainPattern(
       handler,
-      new FillPatternHandler(testScriptLines, index, config),
+      new FillPatternHandler(testScriptLines, index, config, sourcePath),
     );
   }
 
@@ -125,6 +128,7 @@ export function processPatternsInLine(
     config,
     sourceDir,
     dataSourcePath,
+    sourcePath,
   );
   handler.execute(
     newTestScriptLines,

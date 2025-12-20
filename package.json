@@ -1,5 +1,5 @@
 {
-  "name": "@egain-qe/egain-playwright-transformer",
+  "name": "@egain/playwright-transformer",
   "version": "0.1.1",
   "description": "Transform recorded Playwright tests into data-driven test script",
   "type": "module",
@@ -19,7 +19,7 @@
     }
   },
   "bin": {
-    "egain-playwright-transformer": "./dist/cli.mjs"
+    "egain-transformer": "./dist/cli.mjs"
   },
   "files": [
     "dist",

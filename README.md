@@ -3,7 +3,11 @@
 [![npm version](https://img.shields.io/npm/v/@egain/playwright-transformer)](https://www.npmjs.com/package/@egain/playwright-transformer)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Playwright Transformer is a powerful tool that automatically converts recorded Playwright test scripts into data-driven tests. It extracts test data values from your test files, externalizes them to JSON data files, and transforms your tests to use data-driven patterns—making your test suite more maintainable, scalable, and easier to update.
+Playwright Transformer is an open-source utility that helps teams turn recorded Playwright UI tests into clean, maintainable, and data-driven automation. It’s built for developers and test engineers who want to move quickly without accumulating brittle or hard-to-maintain test code.
+
+Instead of hard-coding values directly into test scripts, Playwright Transformer extracts test data, externalizes it into JSON files, and refactors tests to follow data-driven patterns. This keeps test logic focused on behavior, makes updates easier when UI or data changes, and helps test suites scale as applications grow.
+
+Whether you’re experimenting with Playwright for the first time or maintaining a large automation suite, Playwright Transformer aims to reduce duplication, improve readability, and make UI tests easier to evolve over time.
 
 ## ✨ Features
 

@@ -192,7 +192,9 @@ export class DefaultPatternHandler extends PatternHandler {
                   replacementTextForMatchingPattern
                 );
 
-              // TODO: Hack - revisit this and clean it up.
+              // Clean up double closing parens when EXPECT_TEXT_WITH_PARAM_STR is present.
+              // This occurs when transforming expect() statements with dynamic IDs where
+              // the original pattern has an extra closing paren that needs to be removed.
               if (transformedLine.includes(this.config.EXPECT_TEXT_WITH_PARAM_STR)) {
                 transformedLine = transformedLine
                   .replace(this.config.EXPECT_TEXT_WITH_PARAM_STR, " ")
