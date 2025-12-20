@@ -39,6 +39,17 @@ export class PlaywrightTransformer {
   }
 
   async transform(): Promise<TransformResult> {
+    // Validate input directory exists
+    if (!fs.existsSync(this.config.inputDir)) {
+      const errorMsg = `Input directory does not exist: ${this.config.inputDir}`;
+      Logger.error(errorMsg);
+      return {
+        success: false,
+        transformedFiles: 0,
+        errors: [errorMsg],
+      };
+    }
+
     const errors: string[] = [];
     let transformedFiles = 0;
 
@@ -47,8 +58,18 @@ export class PlaywrightTransformer {
       const testFiles = findTsFiles(this.config.inputDir);
       Logger.log(`Found ${testFiles.length} test file(s) to transform`);
 
-      // Process each file (for now, just process first file for testing)
-      const filesToProcess = testFiles.slice(0, 1); // Only process first file for now
+      if (testFiles.length === 0) {
+        const errorMsg = `No test files found in input directory: ${this.config.inputDir}`;
+        Logger.error(errorMsg);
+        return {
+          success: false,
+          transformedFiles: 0,
+          errors: [errorMsg],
+        };
+      }
+
+      // Process only the first file (use transformAll() to process all files)
+      const filesToProcess = testFiles.slice(0, 1);
       for (const sourcePath of filesToProcess) {
         try {
           // Get destination paths
@@ -68,13 +89,16 @@ export class PlaywrightTransformer {
           deleteFileIfExists(destPath);
           deleteFileIfExists(jsonDataPath);
 
-          // Transform file (for Step 4: just copy, no transformation)
+          // Transform file
           await this.transformFile(sourcePath, destPath, jsonDataPath);
 
           transformedFiles++;
           Logger.log(`Successfully processed: ${path.basename(sourcePath)}`);
         } catch (error) {
-          const errorMsg = `Failed to transform ${sourcePath}: ${error}`;
+          const errorMsg = this.formatError(
+            `Failed to transform ${sourcePath}`,
+            error,
+          );
           Logger.error(errorMsg);
           errors.push(errorMsg);
         }
@@ -90,7 +114,7 @@ export class PlaywrightTransformer {
         errors,
       };
     } catch (error) {
-      const errorMsg = `Transformation failed: ${error}`;
+      const errorMsg = this.formatError('Transformation failed', error);
       Logger.error(errorMsg);
       errors.push(errorMsg);
       return {
@@ -105,6 +129,17 @@ export class PlaywrightTransformer {
    * Transform all files in the input directory
    */
   async transformAll(): Promise<TransformResult> {
+    // Validate input directory exists
+    if (!fs.existsSync(this.config.inputDir)) {
+      const errorMsg = `Input directory does not exist: ${this.config.inputDir}`;
+      Logger.error(errorMsg);
+      return {
+        success: false,
+        transformedFiles: 0,
+        errors: [errorMsg],
+      };
+    }
+
     const errors: string[] = [];
     let transformedFiles = 0;
 
@@ -112,6 +147,16 @@ export class PlaywrightTransformer {
       // Find all TypeScript test files in input directory
       const testFiles = findTsFiles(this.config.inputDir);
       Logger.log(`Found ${testFiles.length} test file(s) to transform`);
+
+      if (testFiles.length === 0) {
+        const errorMsg = `No test files found in input directory: ${this.config.inputDir}`;
+        Logger.error(errorMsg);
+        return {
+          success: false,
+          transformedFiles: 0,
+          errors: [errorMsg],
+        };
+      }
 
       // Process all files
       for (const sourcePath of testFiles) {
@@ -139,7 +184,10 @@ export class PlaywrightTransformer {
           transformedFiles++;
           Logger.log(`Successfully processed: ${path.basename(sourcePath)}`);
         } catch (error) {
-          const errorMsg = `Failed to transform ${sourcePath}: ${error}`;
+          const errorMsg = this.formatError(
+            `Failed to transform ${sourcePath}`,
+            error,
+          );
           Logger.error(errorMsg);
           errors.push(errorMsg);
         }
@@ -155,7 +203,7 @@ export class PlaywrightTransformer {
         errors,
       };
     } catch (error) {
-      const errorMsg = `Transformation failed: ${error}`;
+      const errorMsg = this.formatError('Transformation failed', error);
       Logger.error(errorMsg);
       errors.push(errorMsg);
       return {
@@ -167,6 +215,16 @@ export class PlaywrightTransformer {
   }
 
   /**
+   * Format error message preserving stack trace and error details
+   */
+  private formatError(context: string, error: unknown): string {
+    if (error instanceof Error) {
+      return `${context}: ${error.message}${error.stack ? `\n${error.stack}` : ''}`;
+    }
+    return `${context}: ${String(error)}`;
+  }
+
+  /**
    * Transform a single file
    * Step 6: Applies insert line patterns, removes noise, and injects prepend file
    */
@@ -175,8 +233,8 @@ export class PlaywrightTransformer {
     destPath: string,
     jsonDataPath: string,
   ): Promise<void> {
-    // Reset upload counter for each new file transformation
-    FillPatternHandler.uploadCounter = 0;
+    // Reset upload counter for this file transformation
+    FillPatternHandler.resetUploadCounterForFile(sourcePath);
 
     // Read source file
     let lines = readFileLines(sourcePath);
@@ -277,5 +335,8 @@ export class PlaywrightTransformer {
     const jsonData = [jsonMap];
     const jsonStr = getJsonStringFromMap(jsonData);
     fs.writeFileSync(jsonDataPath, jsonStr, 'utf-8');
+
+    // Clean up upload counter for this file
+    FillPatternHandler.clearUploadCounterForFile(sourcePath);
   }
 }

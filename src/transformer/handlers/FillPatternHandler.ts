@@ -19,18 +19,49 @@ const DATA_FILE_VARIABLE_PREPENDER = "data.";
 const UNIQUE_INDEX_APPEND_STRING = " + uniqueIndex";
 const EMPTY_LINE = " ";
 
+// Map to track upload counters per file path
+// This ensures each file transformation has its own counter
+// and avoids static state issues when processing multiple files
+const uploadCountersByFile = new Map<string, number>();
+
 export class FillPatternHandler extends PatternHandler {
-  // Counter appended to the filePath variable in the test script to make it unique.
-  static uploadCounter = 0;
   private config: TransformerConfig;
+  private sourcePath: string;
 
   constructor(
     testScriptLines: string[],
     index: number,
-    config: TransformerConfig
+    config: TransformerConfig,
+    sourcePath?: string
   ) {
     super(testScriptLines, index);
     this.config = config;
+    this.sourcePath = sourcePath || "";
+  }
+
+  /**
+   * Reset the upload counter for a specific file (called when starting a new file transformation)
+   */
+  static resetUploadCounterForFile(sourcePath: string): void {
+    uploadCountersByFile.set(sourcePath, 0);
+  }
+
+  /**
+   * Increment and return the upload counter for the current file
+   * Uses the sourcePath parameter for consistency
+   */
+  private incrementUploadCounter(sourcePath: string): number {
+    const current = uploadCountersByFile.get(sourcePath) || 0;
+    const next = current + 1;
+    uploadCountersByFile.set(sourcePath, next);
+    return next;
+  }
+
+  /**
+   * Clear the upload counter for a file (called after transformation completes)
+   */
+  static clearUploadCounterForFile(sourcePath: string): void {
+    uploadCountersByFile.delete(sourcePath);
   }
 
   protected processLine(
@@ -125,7 +156,7 @@ export class FillPatternHandler extends PatternHandler {
           const isFileUpload =
             fpdo.isFileUpload === true || String(fpdo.isFileUpload) === "true";
           if (isFileUpload) {
-            FillPatternHandler.uploadCounter++;
+            const currentCounter = this.incrementUploadCounter(sourcePath);
 
             let line2: string | null = null;
             const isMultipleFileUpload =
@@ -140,14 +171,14 @@ export class FillPatternHandler extends PatternHandler {
                 );
               line = line.replace(
                 "filePath",
-                "filePath" + "_" + FillPatternHandler.uploadCounter
+                "filePath" + "_" + currentCounter
               );
               newTestScriptLines.push(line);
 
               line2 =
                 this.config.FILE_UPLOAD_SET_MULTIPLEFILE_PATTERN_STR_2.replace(
                   "filePath",
-                  "filePath" + "_" + FillPatternHandler.uploadCounter
+                  "filePath" + "_" + currentCounter
                 );
             } else {
               line = this.config.FILE_UPLOAD_SET_FILE_PATTERN_STR_1.replace(
@@ -156,13 +187,13 @@ export class FillPatternHandler extends PatternHandler {
               );
               line = line.replace(
                 "filePath",
-                "filePath" + "_" + FillPatternHandler.uploadCounter
+                "filePath" + "_" + currentCounter
               );
               newTestScriptLines.push(line);
 
               line2 = this.config.FILE_UPLOAD_SET_FILE_PATTERN_STR_2.replace(
                 "filePath",
-                "filePath" + "_" + FillPatternHandler.uploadCounter
+                "filePath" + "_" + currentCounter
               );
             }
 
