@@ -82,7 +82,7 @@ If you've cloned or forked this repository and want to use it directly from sour
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/egain-playwright-transformer.git
+   git clone https://github.com/egain/playwright-transformer.git
    cd playwright-transformer
    ```
 
@@ -764,4 +764,4 @@ For issues, questions, or contributions, please open an issue on [GitHub](https:
 
 ---
 
-**Made with ❤️ by the eGain Development Team**
+**Made with ❤️ by the eGain Team**
