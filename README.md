@@ -1,6 +1,6 @@
 # 🎭 Playwright Transformer
 
-[![npm version](https://img.shields.io/npm/v/@egain/playwright-transformer)](https://www.npmjs.com/package/@egain/playwright-transformer)
+[![npm version](https://img.shields.io/npm/v/egain-playwright-transformer)](https://www.npmjs.com/package/egain-playwright-transformer)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Playwright Transformer is an open-source utility that helps teams turn recorded Playwright UI tests into clean, maintainable, and data-driven automation. It’s built for developers and test engineers who want to move quickly without accumulating brittle or hard-to-maintain test code.
@@ -57,28 +57,19 @@ Whether you’re experimenting with Playwright for the first time or maintaining
 ### Install from npm
 
 ```bash
-npm install -D @egain/playwright-transformer
+npm install -D egain-playwright-transformer
 ```
 
 Or using yarn:
 
 ```bash
-yarn add -D @egain/playwright-transformer
+yarn add -D egain-playwright-transformer
 ```
 
-After installation, you can use the CLI directly via npx:
+After installation, you can use the CLI directly via below command:
 
 ```bash
-npx @egain/playwright-transformer --all \
-  --input-dir tests/input \
-  --output-dir tests/output \
-  --data-dir data/output
-```
-
-Or if installed locally, use the bin command:
-
-```bash
-npx egain-transformer --all \
+node node_modules/egain-playwright-transformer/dist/cli.mjs --all \
   --input-dir tests/input \
   --output-dir tests/output \
   --data-dir data/output
@@ -89,17 +80,20 @@ npx egain-transformer --all \
 If you've cloned or forked this repository and want to use it directly from source:
 
 1. **Clone the repository:**
+
    ```bash
-   git clone https://github.com/egain/playwright-transformer.git
+   git clone https://github.com/egain-playwright-transformer.git
    cd playwright-transformer
    ```
 
 2. **Install dependencies:**
+
    ```bash
    npm install
    ```
 
 3. **Build the project:**
+
    ```bash
    npm run build
    ```
@@ -141,7 +135,7 @@ The easiest way to get started is using the command-line interface as below wher
 
 ```bash
 # Transform all test files
-node node_modules/@egain/playwright-transformer/dist/cli.mjs \
+node node_modules/egain-playwright-transformer/dist/cli.mjs \
   --all \
   --input-dir tests/input \
   --output-dir tests/output \
@@ -167,8 +161,7 @@ Add to your `package.json`:
 ```json
 {
   "scripts": {
-    "transform:all": "npx @egain/playwright-transformer --all --input-dir tests/input --output-dir tests/output --data-dir tests/data",
-    "transform": "npx @egain/playwright-transformer --input-dir tests/input --output-dir tests/output --data-dir tests/data"
+    "transform:all": "node node_modules/egain-playwright-transformer/dist/cli.mjs --all --input-dir tests/input --output-dir tests/output --data-dir tests/data"
   }
 }
 ```
@@ -179,8 +172,6 @@ Then run:
 # Transform all files
 npm run transform:all
 
-# Transform only the first file
-npm run transform
 ```
 
 ## 📖 Usage
@@ -193,16 +184,11 @@ The CLI provides a simple interface for transforming test files:
 
 ```bash
 # Transform all test files
-npx @egain/playwright-transformer --all \
+node node_modules/egain-playwright-transformer/dist/cli.mjs --all \
   --input-dir tests/input \
   --output-dir tests/output \
   --data-dir data/output
 
-# Transform only the first file (default)
-npx @egain/playwright-transformer \
-  --input-dir tests/input \
-  --output-dir tests/output \
-  --data-dir data/output
 ```
 
 #### When using from source (cloned/forked repo):
@@ -218,13 +204,13 @@ node dist/cli.mjs \
 
 #### Options
 
-| Option         | Short | Description                                                      | Required |
-| -------------- | ----- | ---------------------------------------------------------------- | -------- |
-| `--input-dir`  | `-i`  | Directory containing source test files (`.spec.ts`)              | ✅ Yes   |
-| `--output-dir` | `-o`  | Directory for transformed test files                             | ✅ Yes   |
-| `--data-dir`   | `-d`  | Directory for JSON data files                                    | ✅ Yes   |
-| `--all`        | `-a`  | Transform all files in input directory (default: first file only)| ❌ No    |
-| `--help`       | `-h`  | Show help message                                                | ❌ No    |
+| Option         | Short | Description                                                       | Required |
+| -------------- | ----- | ----------------------------------------------------------------- | -------- |
+| `--input-dir`  | `-i`  | Directory containing source test files (`.spec.ts`)               | ✅ Yes   |
+| `--output-dir` | `-o`  | Directory for transformed test files                              | ✅ Yes   |
+| `--data-dir`   | `-d`  | Directory for JSON data files                                     | ✅ Yes   |
+| `--all`        | `-a`  | Transform all files in input directory (default: first file only) | ❌ No    |
+| `--help`       | `-h`  | Show help message                                                 | ❌ No    |
 
 > **Note:** By default (without `--all` flag), the transformer processes only the first test file found in the input directory. Use the `--all` flag to transform all test files.
 
@@ -232,13 +218,7 @@ node dist/cli.mjs \
 
 ```bash
 # Transform all test files
-npx @egain/playwright-transformer --all \
-  --input-dir ./tests/input \
-  --output-dir ./tests/output \
-  --data-dir ./data/output
-
-# Transform only the first test file (default behavior)
-npx @egain/playwright-transformer \
+node node_modules/egain-playwright-transformer/dist/cli.mjs --all \
   --input-dir ./tests/input \
   --output-dir ./tests/output \
   --data-dir ./data/output
@@ -249,17 +229,7 @@ npx @egain/playwright-transformer \
 For more control, use the programmatic API:
 
 ```typescript
-import {
-  transform,
-  PlaywrightTransformer,
-} from '@egain/playwright-transformer';
-
-// Simple usage - transforms only the first file
-await transform({
-  inputDir: './tests/input',
-  outputDir: './tests/output',
-  dataDir: './data/output',
-});
+import { transform, PlaywrightTransformer } from 'egain-playwright-transformer';
 
 // Advanced usage - transform all files
 const transformer = new PlaywrightTransformer({
@@ -276,9 +246,6 @@ if (result.success) {
 } else {
   console.error('Errors:', result.errors);
 }
-
-// Or transform only the first file
-const firstFileResult = await transformer.transform();
 ```
 
 > **Note:** The `transform()` function and `transformer.transform()` method process only the first test file found in the input directory. Use `transformer.transformAll()` to process all files.
